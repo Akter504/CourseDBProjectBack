@@ -70,6 +70,7 @@ export default function Register() {
             const response = await registerUser(userData);
             console.log(response);
             if (response.success) {
+                localStorage.setItem('token', response.token);
                 setMessage("Успешная регистрация");
             } else {
                 setMessage("Регистрация оказалась не успешной");
