@@ -38,7 +38,18 @@ public class ProjectsService {
         return projectsRepository.findById(projectId);
     }
 
-    public List<Projects> getAllProjects() {
-        return projectsRepository.findAll();
+    public void updateProject(Long id, String description, String nameProject) {
+        Projects projects = projectsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        projects.setDescription(description);
+        projects.setNameProject(nameProject);
+        projectsRepository.save(projects);
+    }
+
+    public Optional<List<Projects>> getAllProjects() {
+        return Optional.of(projectsRepository.findAll());
+    }
+
+    public Optional<List<Projects>> getProjectByEmail(String email) {
+        return projectsRepository.findAllByCreatedBy(email);
     }
 }

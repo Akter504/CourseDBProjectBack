@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import axiosInstance from "../utils/axiosInstance";
+import {Link} from "react-router-dom";
 
 const CreateTask = ({ projectId }) => {
     const [taskName, setTaskName] = useState('');
@@ -33,6 +33,9 @@ const CreateTask = ({ projectId }) => {
                 placeholder="Task Description"
             />
             <button onClick={handleCreateTask}>Create Task</button>
+            <Link to="/projects">
+                <button>Return to projects</button>
+            </Link>
         </div>
     );
 };

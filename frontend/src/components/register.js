@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { styled } from '@mui/material/styles';
 import {registerUser} from "./auth";
+import {useNavigate} from "react-router-dom";
 
 function Copyright() {
     return (
@@ -57,6 +58,7 @@ export default function Register() {
     });
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,6 +74,7 @@ export default function Register() {
             if (response.success) {
                 localStorage.setItem('token', response.token);
                 setMessage("Успешная регистрация");
+                navigate('/');
             } else {
                 setMessage("Регистрация оказалась не успешной");
             }

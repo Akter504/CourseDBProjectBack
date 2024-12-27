@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { styled } from '@mui/material/styles';
 import {loginUser} from "./auth";
+import { useNavigate } from 'react-router-dom';
 
 function Copyright() {
     return (
@@ -55,6 +56,7 @@ export default function Login() {
     });
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -67,10 +69,11 @@ export default function Login() {
         setMessage('');
         try {
             const response = await loginUser(loginData);
-            console.log(response);
             if (response.success) {
+                console.log(response.token);
                 localStorage.setItem('token', response.token);
                 setMessage('Успешный вход');
+                navigate('/');
             } else {
                 setMessage('Неверный email или пароль');
             }

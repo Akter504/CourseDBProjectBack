@@ -30,4 +30,8 @@ public class Tasks {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Projects project;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private TaskStatus taskStatus;
 }

@@ -89,6 +89,7 @@ public class AuthController {
                 if (roles.isPresent()) {
                     String token = jwtTokenProvider.createToken(foundUser.getUserName(), foundUser.getEmail(),
                             List.of(roles.get().getNameSystemRole()));
+                    System.out.println("Token is created\n");
                     response.put("success", true);
                     response.put("message", "User authorization successfully");
                     response.put("token" , token);

@@ -8,8 +8,7 @@ import ru.maryan.webproject.coursedbprojectback.repositories.SystemRolesReposito
 import ru.maryan.webproject.coursedbprojectback.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -40,15 +39,12 @@ public class UserService {
         return userRep.findById(id);
     }
 
-    public Users updateUser(Long id, String userName,
-                            String email, String phoneNumber,
-                            String surnameUser, String passwordHash) {
+    public Users updateUser(Long id, String userName, String phoneNumber,
+                            String surnameUser) {
         Users user = userRep.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setUserName(userName);
-        user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setSurnameUser(surnameUser);
-        user.setPasswordHash(passwordEncoder.encode(passwordHash));
         return userRep.save(user);
     }
 
@@ -60,11 +56,33 @@ public class UserService {
         return systemRolesService.getRoleUserByUser(user);
     }
 
-    public List<Users> getAllUsers() {
-        return userRep.findAll();
+    public Map<String, Object> getAllUsers() {
+        List<Users> users = userRep.findAll();
+        Map<String, Object> response = new HashMap<>();
+        List<SystemRoles> systemRoles = new ArrayList<>();
+        for (Users user : users) {
+            SystemRoles systemRole = getUserRole(user)
+                    .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+            systemRoles.add(systemRole);
+        }
+        response.put("users", users);
+        response.put("roles", systemRoles);
+        return response;
     }
 
     public void deleteUser(Long id) {
         userRep.deleteById(id);
+    }
+
+    public void updateUserAndRole(Long id, String userName, String phoneNumber, String surnameUser, String role) {
+        Users user = userRep.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setUserName(userName);
+        user.setPhoneNumber(phoneNumber);
+        user.setSurnameUser(surnameUser);
+        SystemRoles systemRole = systemRolesService.getRoleUserByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        systemRole.setNameSystemRole(role);
+        systemRolesService.updateRole(systemRole);
     }
 }

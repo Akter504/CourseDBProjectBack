@@ -21,4 +21,8 @@ public class SystemRolesService {
     public Optional<SystemRoles> getRoleUserByUser(Users user) {
         return systemRolesRepository.findByUser(user);
     }
+
+    public void updateRole(SystemRoles systemRole) {
+        systemRolesRepository.save(systemRole);
+    }
 }

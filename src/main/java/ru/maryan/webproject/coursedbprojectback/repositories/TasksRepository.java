@@ -6,8 +6,9 @@ import ru.maryan.webproject.coursedbprojectback.models.Projects;
 import ru.maryan.webproject.coursedbprojectback.models.Tasks;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Long> {
-    List<Tasks> findAllByProject(Projects project);
+   Optional<List<Tasks>> findAllByProject(Projects project);
 }

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.maryan.webproject.coursedbprojectback.components.JwtTokenProvider;
 import ru.maryan.webproject.coursedbprojectback.models.Projects;
+import ru.maryan.webproject.coursedbprojectback.models.TaskStatus;
 import ru.maryan.webproject.coursedbprojectback.models.Tasks;
 import ru.maryan.webproject.coursedbprojectback.services.ProjectsService;
 import ru.maryan.webproject.coursedbprojectback.services.TasksService;
@@ -39,10 +41,20 @@ public class TaskController {
         Optional<Projects> existingProjects = projectsService.findProjectById(projectId);
         if (existingProjects.isPresent()) {
             Projects project = existingProjects.get();
-            return ResponseEntity.ok(tasksService.getAllTasks(project));
+            List<Tasks> tasks = tasksService.getAllTasks(project)
+                    .orElseThrow(() -> new IllegalArgumentException("Tasks not found"));
+            return ResponseEntity.ok(tasks);
         }
         return ResponseEntity.badRequest().build();
 
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin")
+    public ResponseEntity<List<Tasks>> adminGetProjects() {
+        List<Tasks> tasks = tasksService.getAllTasksInDB()
+                .orElseThrow(() -> new IllegalArgumentException("Tasks not found"));
+        return ResponseEntity.ok(tasks);
     }
 
     @PostMapping("/new/{project_id}")
@@ -75,6 +87,12 @@ public class TaskController {
     public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id) {
         tasksService.deleteTask(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update/{id}/{status}")
+    public ResponseEntity<TaskStatus> updateTask(@PathVariable("id") Long id,@PathVariable("status") String status, @RequestBody Tasks tasks) {
+        TaskStatus updatedStatus = tasksService.updateTask(id, tasks.getNameTask(), tasks.getDescription(), status);
+        return ResponseEntity.ok(updatedStatus);
     }
 
 }
