@@ -30,9 +30,10 @@ public class JwtTokenProvider {
         System.out.println("Using predefined Base64 Key: " + BASE64_KEY);
     }
 
-    public String createToken(String username, List<String> roles) {
+    public String createToken(String username, String email, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);
+        claims.put("email", email);
 
         Date now = new Date();
         Date validateDate = new Date(now.getTime() + validityInMilliseconds);
@@ -81,6 +82,15 @@ public class JwtTokenProvider {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractEmail(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("email").toString();
     }
 
     public List<GrantedAuthority> extractAuthorities(String token) {

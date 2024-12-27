@@ -63,7 +63,7 @@ public class AuthController {
         Optional<SystemRoles> roles = userService.getUserRole(savedUser);
         log.debug("Роль пользователя: {}", roles);
         if (roles.isPresent()) {
-            String token = jwtTokenProvider.createToken(savedUser.getUserName(),
+            String token = jwtTokenProvider.createToken(savedUser.getUserName(), savedUser.getEmail(),
                     List.of(roles.get().getNameSystemRole()));
             log.info("Пользователь {} успешно зарегистрирован. Создан токен.", savedUser.getUserName());
             response.put("success", true);
@@ -87,7 +87,7 @@ public class AuthController {
 
                 Optional<SystemRoles> roles = userService.getUserRole(foundUser);
                 if (roles.isPresent()) {
-                    String token = jwtTokenProvider.createToken(foundUser.getUserName(),
+                    String token = jwtTokenProvider.createToken(foundUser.getUserName(), foundUser.getEmail(),
                             List.of(roles.get().getNameSystemRole()));
                     response.put("success", true);
                     response.put("message", "User authorization successfully");

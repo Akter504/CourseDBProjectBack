@@ -35,7 +35,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/actuator/**","/api/auth/register", "/api/auth/login", "/", "/error").permitAll()
-                        .requestMatchers("/api/auth/test-jwt").authenticated()
+                        .requestMatchers("/api/projects", "api/tasks").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

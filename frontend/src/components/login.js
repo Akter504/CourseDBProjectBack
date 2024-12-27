@@ -69,6 +69,7 @@ export default function Login() {
             const response = await loginUser(loginData);
             console.log(response);
             if (response.success) {
+                localStorage.setItem('token', response.token);
                 setMessage('Успешный вход');
             } else {
                 setMessage('Неверный email или пароль');
