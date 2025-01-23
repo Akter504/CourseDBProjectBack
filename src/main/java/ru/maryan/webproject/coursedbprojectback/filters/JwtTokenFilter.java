@@ -33,8 +33,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.extractUsername(token);
-            System.out.println("TOKEN VALID");
-            logger.trace("JWT token valid, username extracted: " + username);
             List<GrantedAuthority> authorities = jwtTokenProvider.extractAuthorities(token);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     username,null, authorities);
@@ -42,7 +40,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token is expired or invalid");
-            logger.debug("Invalid token or no token found");
             return;
         }
         filterChain.doFilter(request, response);

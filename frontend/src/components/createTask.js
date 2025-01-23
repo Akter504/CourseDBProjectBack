@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axiosInstance from "../utils/axiosInstance";
 import {Link} from "react-router-dom";
 
@@ -12,6 +12,7 @@ const CreateTask = ({ projectId }) => {
                 nameTask: taskName,
                 description: taskDescription,
             });
+            window.location.reload();
             console.log(response.data);
         } catch (error) {
             console.error('Ошибка при создании задачи', error);

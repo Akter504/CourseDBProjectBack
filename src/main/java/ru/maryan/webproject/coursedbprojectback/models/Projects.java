@@ -1,6 +1,5 @@
 package ru.maryan.webproject.coursedbprojectback.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +26,8 @@ public class Projects {
 
     @Column(name = "created_at", nullable = false, length = 50)
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 }

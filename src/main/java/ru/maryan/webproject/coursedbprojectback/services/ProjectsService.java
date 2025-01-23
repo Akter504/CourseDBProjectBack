@@ -3,30 +3,36 @@ package ru.maryan.webproject.coursedbprojectback.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.maryan.webproject.coursedbprojectback.models.Projects;
+import ru.maryan.webproject.coursedbprojectback.models.Users;
 import ru.maryan.webproject.coursedbprojectback.repositories.ProjectsRepository;
+import ru.maryan.webproject.coursedbprojectback.repositories.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProjectsService {
     private final ProjectsRepository projectsRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ProjectsService(ProjectsRepository projectsRepository) {
+    public ProjectsService(ProjectsRepository projectsRepository, UserRepository userRepository) {
         this.projectsRepository = projectsRepository;
+        this.userRepository = userRepository;
     }
 
     public Projects createProject(String nameProject, String description,
                               String createdBy) {
         Projects projects = new Projects();
+        Users users = userRepository.findByEmail(createdBy)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         LocalDateTime now = LocalDateTime.now();
         projects.setNameProject(nameProject);
         projects.setCreatedBy(createdBy);
         projects.setCreatedAt(now);
         projects.setDescription(description);
+        projects.setUser(users);
         return projectsRepository.save(projects);
     }
 

@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.maryan.webproject.coursedbprojectback.components.JwtTokenProvider;
 import ru.maryan.webproject.coursedbprojectback.models.Comments;
-import ru.maryan.webproject.coursedbprojectback.models.Tasks;
-import ru.maryan.webproject.coursedbprojectback.repositories.TasksRepository;
 import ru.maryan.webproject.coursedbprojectback.services.CommentsService;
 
 import java.util.List;

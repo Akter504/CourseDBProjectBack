@@ -8,11 +8,11 @@ const Menu = ({ currentPage }) => {
         <div className="menu-container">
             {token ? (
                 <>
-                    <Link to="/projects" className="menu-item">Перейти к проектам</Link>
+                    <Link to="/projects" className="menu-item">Go to Projects</Link>
                     {currentPage !== 'profile' && (
-                        <Link to="/profile" className="menu-item">Профиль</Link>
+                        <Link to="/profile" className="menu-item">Profile</Link>
                     )}
-                    <Link to="/" className="menu-item">Главная</Link>
+                    <Link to="/" className="menu-item">HomePage</Link>
                     <button className="menu-item" onClick={() => {
                         localStorage.removeItem('token');
                         window.location.reload();
@@ -20,8 +20,8 @@ const Menu = ({ currentPage }) => {
                 </>
             ) : (
                 <>
-                    <Link to="/login" className="menu-item">Авторизоваться</Link>
-                    <Link to="/register" className="menu-item">Зарегистрироваться</Link>
+                    <Link to="/login" className="menu-item">Login</Link>
+                    <Link to="/register" className="menu-item">Register</Link>
                 </>
             )}
         </div>

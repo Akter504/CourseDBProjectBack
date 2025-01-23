@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import axiosInstance from "../utils/axiosInstance";
-import {Link} from "react-router-dom";
 
 const CreateProject = () => {
     const [projects, setProjects] = useState([]);
@@ -16,8 +15,9 @@ const CreateProject = () => {
             const response = await axiosInstance.get('/projects');
             setProjects(response.data);
         } catch (error) {
-            console.error('Ошибка при получении проектов', error);
+            console.error('Error can`t get projects.', error);
         }
+
     };
 
     const handleCreateProject = async () => {
@@ -26,9 +26,10 @@ const CreateProject = () => {
                 nameProject: projectName,
                 description: projectDescription,
             });
-            fetchProjects(); // Обновляем список проектов после создания нового
+
+            window.location.reload();
         } catch (error) {
-            console.error('Ошибка при создании проекта', error);
+            console.error('Error can`t create project.', error);
         }
     };
 

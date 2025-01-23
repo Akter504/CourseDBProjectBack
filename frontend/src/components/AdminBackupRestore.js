@@ -21,7 +21,6 @@ const AdminBackupRestore = () => {
             setMessage('Backup created successfully.');
         } catch (error) {
             setError('Error creating backup.');
-            console.error('Error creating backup', error);
         } finally {
             setLoading(false);
         }
@@ -41,10 +40,8 @@ const AdminBackupRestore = () => {
                 },
             });
             setMessage('Restore completed successfully.');
-            console.log('Restore completed:', response.data);
         } catch (error) {
             setError('Error restoring backup.');
-            console.error('Error restoring backup', error);
         } finally {
             setLoading(false);
         }

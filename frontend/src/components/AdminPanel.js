@@ -36,7 +36,6 @@ const AdminPanel = () => {
     const fetchUsers = async () => {
         const response = await axiosInstance.get('/users/admin');
         const data = await response.data;
-        console.log(data);
         setUsers(data.users);
         setRoles(data.roles);
     };
@@ -85,7 +84,6 @@ const AdminPanel = () => {
         e.preventDefault();
         try {
             const roleName = formData.role.nameSystemRole;
-            console.log(roleName);
             await axiosInstance.put(`/users/${editingUser.id}/${roleName}`, formData);
             await fetchUsers();
             setEditingUser(null);

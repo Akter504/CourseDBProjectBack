@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.maryan.webproject.coursedbprojectback.models.SystemRoles;
 import ru.maryan.webproject.coursedbprojectback.models.Users;
-import ru.maryan.webproject.coursedbprojectback.repositories.SystemRolesRepository;
 import ru.maryan.webproject.coursedbprojectback.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

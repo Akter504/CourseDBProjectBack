@@ -1,8 +1,5 @@
 package ru.maryan.webproject.coursedbprojectback.controllers;
 
-import io.jsonwebtoken.Claims;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/tasks")
 public class TaskController {
-    private static final Logger log = LoggerFactory.getLogger(TaskController.class);
     private final TasksService tasksService;
     private final ProjectsService projectsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -68,16 +64,12 @@ public class TaskController {
         Map<String, Object> response = new HashMap<>();
         if (existingProjects.isPresent()) {
             Projects project = existingProjects.get();
-            log.info("Creating task with name: {} and description: {} for user: {}", tasks.getNameTask(), tasks.getDescription(), email);
             tasksService.createTask(tasks.getNameTask(), tasks.getDescription(),
                     email, project);
-            log.info("Successful create task.");
-
             response.put("success", true);
             response.put("message", "The task has been successfully created.");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-        log.error("NO SUCH PROJECT");
         response.put("success", false);
         response.put("message", "Project not find.");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

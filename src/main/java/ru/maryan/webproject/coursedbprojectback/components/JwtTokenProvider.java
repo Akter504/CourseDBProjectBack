@@ -22,10 +22,6 @@ public class JwtTokenProvider {
     private static final Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(BASE64_KEY));
     private final long validityInMilliseconds = 3600000;
 
-    private JwtTokenProvider() {
-        System.out.println("Using predefined Base64 Key: " + BASE64_KEY);
-    }
-
     public String createToken(String username, String email, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);
@@ -44,16 +40,11 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            System.out.println("Validating token: " + token);
             var claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            System.out.println("Token claims: " + claims.getBody());
             if (!isTokenExpired(token)) {
                 return true;
-            } else {
-                System.out.println("Token expired.");
             }
         } catch (JwtException | IllegalArgumentException e) {
-            System.out.println("JWT validation error: " + e.getMessage());
             throw new RuntimeException("Invalid JWT token");
         }
         return false;

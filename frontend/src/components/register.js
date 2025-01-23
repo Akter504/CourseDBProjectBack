@@ -73,13 +73,13 @@ export default function Register() {
             console.log(response);
             if (response.success) {
                 localStorage.setItem('token', response.token);
-                setMessage("Успешная регистрация");
+                setMessage("Successful registration");
                 navigate('/');
             } else {
-                setMessage("Регистрация оказалась не успешной");
+                setMessage("The registration was not successful");
             }
         } catch (error) {
-            setMessage('Произошла ошибка при регистрации');
+            setMessage('An error occurred during registration');
         } finally {
             setIsLoading(false);
         }
@@ -171,7 +171,7 @@ export default function Register() {
                         color="primary"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Загрузка...' : 'Зарегистрироваться'}
+                        {isLoading ? 'Loading...' : 'Register'}
                     </SubmitButton>
                     {message && (
                         <Typography color="error" align="center">
@@ -180,7 +180,7 @@ export default function Register() {
                     )}
                     <Box mt={2} textAlign="center">
                         <Link href="./login" variant="body2">
-                            Уже есть аккаунт? Войти
+                            Do you already have an account? Login.
                         </Link>
                     </Box>
                 </Form>
