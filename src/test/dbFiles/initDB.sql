@@ -65,7 +65,10 @@ CREATE TABLE IF NOT EXISTS Task (
     description varchar(255) NULL,
     due_date timestamp NOT NULL,
     project_id bigint,
-    FOREIGN KEY (project_id) REFERENCES Projects(id)
+    CONSTRAINT fk_task_project
+        FOREIGN KEY (project_id)
+            REFERENCES Projects (id)
+            ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Task_Status_History (

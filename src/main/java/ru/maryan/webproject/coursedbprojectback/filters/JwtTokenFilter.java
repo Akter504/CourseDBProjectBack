@@ -26,17 +26,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = resolveToken(request);
+        if (request.getRequestURI().equals("/api/auth/login") || request.getRequestURI().equals("/api/auth/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.extractUsername(token);
-            System.out.println("TOKEN VALID");
-            logger.trace("JWT token valid, username extracted: " + username);
             List<GrantedAuthority> authorities = jwtTokenProvider.extractAuthorities(token);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     username,null, authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } else {
-            System.out.println("ERROR: " + token);
-            logger.debug("Invalid token or no token found");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token is expired or invalid");
+            return;
         }
         filterChain.doFilter(request, response);
 

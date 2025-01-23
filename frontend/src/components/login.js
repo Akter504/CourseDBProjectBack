@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { styled } from '@mui/material/styles';
 import {loginUser} from "./auth";
+import { useNavigate } from 'react-router-dom';
 
 function Copyright() {
     return (
@@ -26,7 +27,6 @@ function Copyright() {
     );
 }
 
-// Стилизация через styled TODO: шаблон
 const Paper = styled(Box)(({ theme }) => ({
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -55,6 +55,7 @@ export default function Login() {
     });
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -67,15 +68,17 @@ export default function Login() {
         setMessage('');
         try {
             const response = await loginUser(loginData);
-            console.log(response);
             if (response.success) {
-                setMessage('Успешный вход');
+                console.log(response.token);
+                localStorage.setItem('token', response.token);
+                setMessage('Success.');
+                navigate('/');
             } else {
-                setMessage('Неверный email или пароль');
+                setMessage('Wrong email or password.');
             }
         } catch (error) {
-            console.error('Ошибка авторизации', error);
-            setMessage('Ошибка авторизации');
+            console.error('Authorization error.', error);
+            setMessage('Authorization error.');
         } finally {
             setIsLoading(false);
         }
@@ -89,7 +92,7 @@ export default function Login() {
                     <LockOutlinedIcon />
                 </AvatarStyled>
                 <Typography component="h1" variant="h5">
-                    Вход
+                    Login
                 </Typography>
                 <Form noValidate onSubmit={handleSubmit}>
                     <TextField
@@ -111,7 +114,7 @@ export default function Login() {
                         required
                         fullWidth
                         name="passwordHash"
-                        label="Пароль"
+                        label="Password"
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -120,7 +123,7 @@ export default function Login() {
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="Запомнить меня"
+                        label="Remember me"
                     />
                     <SubmitButton
                         type="submit"
@@ -129,7 +132,7 @@ export default function Login() {
                         color="primary"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Загрузка...' : 'Войти'}
+                        {isLoading ? 'Loading...' : 'login'}
                     </SubmitButton>
                     {message && (
                         <Typography color="error" align="center">
@@ -143,12 +146,12 @@ export default function Login() {
                     >
                         <Box>
                             <Link href="#" variant="body2">
-                                Забыли пароль?
+                                Forgot password?
                             </Link>
                         </Box>
                         <Box>
                             <Link href="./register" variant="body2">
-                                {'Нет аккаунта? Зарегистрироваться'}
+                                {'No have account? Register'}
                             </Link>
                         </Box>
                     </Box>
